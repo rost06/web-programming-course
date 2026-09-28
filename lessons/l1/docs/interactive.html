@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>L1 — интерактивные примеры</title>
+  <style>
+    body{font:18px/1.5 system-ui;max-width:980px;margin:auto;padding:24px;background:#f5f7fb;color:#172033}
+    section{background:white;border:1px solid #dce3ef;border-radius:14px;padding:20px;margin:16px 0}
+    button,select,input{font:inherit;padding:8px 10px;border:1px solid #9aa8bd;border-radius:8px;max-width:100%}
+    button{cursor:pointer;background:#244a7c;color:white}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    pre,.result{margin-top:14px;padding:12px;background:#eef5ff;border-radius:8px;white-space:pre-wrap;overflow-wrap:anywhere}
+    code{background:#edf0f5;padding:2px 4px;border-radius:4px}a{color:#244a7c}
+  </style>
+</head>
+<body>
+  <h1>Типы, поиск и фильтрация</h1>
+  <nav><a href="../README.md">Задание</a> · <a href="GUIDE.md">Гайд</a> · <a href="CHEATSHEET.md">Справка</a> · <a href="slides-standalone/slides.html">Слайды</a></nav>
+
+  <section>
+    <h2>Термины и запуск</h2>
+    <p>Тип описывает форму значения, массив хранит коллекцию, union выбирает одну из форм, а чистая функция возвращает результат без изменения входов. В проекте <code>package.json</code> хранит команды, <code>package-lock.json</code> фиксирует версии, <code>node_modules/</code> содержит локальные пакеты, а <code>tsconfig.json</code> задаёт правила TypeScript.</p>
+    <pre><code>npm run check
+npm run demo</code></pre>
+    <p>Полная последовательность создания проекта и проверка версии TypeScript описаны в гайде. Команды выполняются из <code>trainer/</code> одинаково в Linux и Windows PowerShell. Интерактив показывает JavaScript-поведение на книгах.</p>
+  </section>
+
+  <section><h2>Исходные данные</h2><pre id="data"></pre><label><input id="empty" type="checkbox"> Пустой каталог</label></section>
+  <section>
+    <h2>Поиск по идентификатору</h2>
+    <div class="row"><label>ID <input id="id" value="b-1"></label><button id="find">Найти</button></div>
+    <pre id="findResult" aria-live="polite"></pre>
+  </section>
+  <section>
+    <h2>Фильтрация по разделу</h2>
+    <div class="row"><label>Раздел <select id="topic"><option>reference</option><option>fiction</option><option>history</option></select></label><button id="filter">Фильтровать</button></div>
+    <pre id="filterResult" aria-live="polite"></pre>
+  </section>
+  <section>
+    <h2>Внешние пробелы</h2>
+    <div class="row"><label>Строка <input id="text" value="   "></label><button id="trim">Применить trim</button></div>
+    <pre id="textResult" aria-live="polite"></pre>
+  </section>
+
+  <script>
+    const books=[{id:'b-1',title:'Справочник',section:'reference'},{id:'b-2',title:'Рассказы',section:'fiction'},{id:'b-3',title:'Словарь',section:'reference'}];
+    const get=id=>document.getElementById(id);
+    const current=()=>get('empty').checked?[]:books;
+    function findBook(){const value=current().find(book=>book.id===get('id').value);get('findResult').textContent=value?JSON.stringify(value,null,2):'undefined';}
+    function filterBooks(){const value=current().filter(book=>book.section===get('topic').value);get('filterResult').textContent=JSON.stringify(value,null,2)+'\nКоличество: '+value.length;}
+    function trimText(){const value=get('text').value;get('textResult').textContent=JSON.stringify({original:value,length:value.length,trimmed:value.trim(),trimmedLength:value.trim().length},null,2);}
+    function refresh(){get('data').textContent=JSON.stringify(current(),null,2);findBook();filterBooks();trimText();}
+    get('find').onclick=findBook;get('filter').onclick=filterBooks;get('trim').onclick=trimText;get('empty').onchange=refresh;refresh();
+  </script>
+</body>
+</html>

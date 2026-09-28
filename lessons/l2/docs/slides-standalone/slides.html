@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>L2 — React и каталог книг</title>
+  <style>
+    :root{font-family:system-ui,sans-serif;color:#f3eee8;background:#202426}*{box-sizing:border-box}body{margin:0}.slide{display:none;min-height:calc(100vh - 76px);max-width:1120px;margin:auto;padding:clamp(28px,6vw,76px) clamp(22px,7vw,90px) 96px}.slide.is-active{display:block}h1,h2{line-height:1.08;margin:0 0 24px}h1{font-size:clamp(2.5rem,7vw,6rem)}h2{font-size:clamp(2rem,5vw,4rem)}h3{color:#f0bc7c}p,li{font-size:clamp(1rem,1.6vw,1.35rem);line-height:1.5;max-width:920px}li{margin:.6em 0}.accent{color:#f0bc7c}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{padding:18px;border:1px solid #53606a;border-radius:14px;background:#2c3236}.code{padding:18px;overflow:auto;border-radius:12px;background:#131719;color:#f3c18d;font:1rem/1.55 ui-monospace,monospace;white-space:pre}.controls{position:fixed;bottom:0;left:0;right:0;display:flex;gap:10px;align-items:center;padding:12px 18px;background:#131719}.controls button{padding:8px 14px;color:#fff;background:transparent;border:1px solid #71808c;border-radius:7px;cursor:pointer}.counter{min-width:70px;text-align:center}.bar{flex:1;height:5px;background:#3d464b;border-radius:9px}.bar span{display:block;height:100%;background:#f0bc7c;width:0}@media(max-width:620px){.grid{grid-template-columns:1fr}.slide{padding-bottom:110px}}@media print{body{background:#fff;color:#111}.slide,.slide.is-active{display:block;min-height:0;page-break-after:always;padding:24px}.controls{display:none}p,li{color:#111}}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="slide is-active"><p class="accent">L2</p><h1>React: props и состояние</h1><p>Как превратить модель в маленький интерфейс на примере каталога книг.</p></section>
+    <section class="slide"><h2>Зачем React и Vite</h2><p>React помогает разделить UI на компоненты и обновлять его по состоянию. Vite даёт dev-сервер и сборку. Эти инструменты подключаются к существующему проекту L1.</p></section>
+    <section class="slide"><h2>Термины</h2><div class="grid"><div class="card"><h3>Компонент</h3><p>Функция, возвращающая JSX.</p></div><div class="card"><h3>Props</h3><p>Вход компонента от родителя.</p></div><div class="card"><h3>State</h3><p>Изменяемые данные для нового рендера.</p></div><div class="card"><h3>Key</h3><p>Стабильный id элемента списка.</p></div></div></section>
+    <section class="slide"><h2>Подключение к проекту L1</h2><p>Не используйте генератор поверх папки. Установите выбранные версии React, Vite и типов в существующий <code>package.json</code>; подробные команды и конфиги находятся в гайде.</p><p class="accent">Сохраните код и зависимости A1.</p></section>
+    <section class="slide"><h2>Mount и hello-проверка</h2><div class="code">index.html → &lt;div id="root"&gt;&lt;/div&gt;
+main.tsx → createRoot(root).render(&lt;App /&gt;)</div><p>Минимальный hello-экран проверяет только инфраструктуру. После него напишите собственный UI.</p></section>
+    <section class="slide"><h2>Props — контракт функции</h2><div class="code">type BookRowProps = {
+  isbn: string;
+  title: string;
+  onChoose: (isbn: string) =&gt; void;
+};</div><p>Данные идут вниз, callback сообщает о действии вверх.</p></section>
+    <section class="slide"><h2>Список книг и key</h2><div class="code">books.map((book) =&gt; (
+  &lt;BookRow key={book.isbn} ... /&gt;
+))</div><p>ISBN описывает сущность. Индекс описывает только текущую позицию и хрупок после фильтра или сортировки.</p></section>
+    <section class="slide"><h2>Разные формы данных</h2><p>Сначала проверяйте общее поле формы, затем читайте специальные свойства. Бумажная книга имеет страницы, аудиокнига — длительность.</p><p class="accent">Один и тот же принцип нужен для разных форм задания.</p></section>
+    <section class="slide"><h2>Одно состояние выбора</h2><p>Храните минимальный идентификатор выбранной книги. По нему определяйте текущую карточку из исходного каталога; копию всего объекта в state не создавайте.</p><p>При отсутствии id покажите нейтральное состояние.</p></section>
+    <section class="slide"><h2>Безопасный текст</h2><p>Данные книги выводятся как текст. Код или описание не должны превращаться во вставленный HTML и не должны исполняться браузером.</p></section>
+    <section class="slide"><h2>Самостоятельная работа A2</h2><ul><li>Сохранить доменный слой A1.</li><li>Собрать список и карточку через props.</li><li>Использовать стабильный <code>task.id</code> в <code>key</code>.</li><li>Хранить выбор в одном <code>useState</code>.</li><li>Сузить форму по <code>kind</code> и обработать отсутствие.</li></ul></section>
+    <section class="slide"><h2>Граница и проверка</h2><p>Без формы ответов, HTTP и сохранения. Выполните <code>npm run check</code> и <code>npm run build</code>, затем проверьте клавиатуру и узкое окно. Тестовый раннер подключается на L6.</p><p class="accent">P3 проверяет A2.</p></section>
+  </main>
+  <nav class="controls"><button id="prev">Назад</button><button id="next">Далее</button><span class="counter" id="counter"></span><span class="bar"><span id="bar"></span></span><button id="print">Печать</button></nav>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')],counter=document.querySelector('#counter'),bar=document.querySelector('#bar');let current=0;function show(n){current=Math.max(0,Math.min(n,slides.length-1));slides.forEach((s,i)=>s.classList.toggle('is-active',i===current));counter.textContent=`${current+1} / ${slides.length}`;bar.style.width=`${(current+1)/slides.length*100}%`}document.querySelector('#prev').onclick=()=>show(current-1);document.querySelector('#next').onclick=()=>show(current+1);document.querySelector('#print').onclick=()=>window.print();document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))show(current+1);if(['ArrowLeft','PageUp'].includes(e.key))show(current-1);if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1)});show(0);
+  </script>
+</body>
+</html>

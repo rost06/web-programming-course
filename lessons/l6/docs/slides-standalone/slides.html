@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>L6 — тесты поведения</title>
+  <style>
+    :root{font-family:system-ui;color:#eef7f0;background:#1d2922}*{box-sizing:border-box}body{margin:0;overflow:hidden}.slide{display:none;min-height:calc(100vh - 72px);max-width:1100px;margin:auto;padding:clamp(28px,6vw,80px)}.slide.is-active{display:block}h1,h2{line-height:1.06;max-width:900px}h1{font-size:clamp(2.4rem,7vw,5.6rem)}h2{font-size:clamp(1.9rem,5vw,4rem)}p,li{font-size:clamp(1rem,1.6vw,1.35rem);line-height:1.45}pre{background:#111812;color:#bdebc9;padding:1rem;overflow:auto;max-width:900px}.tag{color:#91d89f}.controls{position:fixed;bottom:0;left:0;right:0;padding:12px 20px;background:#111812;display:flex;gap:10px;align-items:center}.controls button{color:#fff;background:transparent;border:1px solid #718277;padding:.45rem .75rem;cursor:pointer}.counter{margin-left:auto;color:#bbc9be}@media(max-width:650px){body{overflow:auto}.slide{padding:30px 20px 90px}pre{font-size:.78rem}}@media print{body{overflow:visible;background:#fff;color:#111}.slide,.slide.is-active{display:block;min-height:0;page-break-after:always;color:#111}.controls{display:none}pre{color:#111;background:#eee}}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="slide is-active"><p class="tag">L6</p><h1>Тестируем поведение</h1><p>Vitest и React Testing Library помогают зафиксировать важные пользовательские правила.</p></section>
+    <section class="slide"><h2>Зачем тест</h2><p>Один тест связывает сценарий, действие и наблюдаемый результат. Он отвечает на конкретный вопрос и переживает внутреннюю перестройку компонента.</p></section>
+    <section class="slide"><h2>Термины</h2><p>Vitest — runner, RTL — пользовательские запросы к DOM, jsdom — тестовое окружение, mock — контролируемая граница, cleanup — очистка DOM.</p></section>
+    <section class="slide"><h2>Подключение</h2><p>Зависимости и script <code>test</code> добавляются студентом в существующий проект <code>trainer</code> точными версиями. До L6 команда <code>npm test</code> не обязательна.</p><p class="accent">Не создавайте новый проект вместо накопленной версии.</p></section>
+    <section class="slide"><h2>Настройка Vitest и DOM</h2><pre>import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+  environment: "jsdom",
+  globals: false,
+  setupFiles: "./src/test-setup.ts",
+  },
+});</pre><p>В setup импортируйте <code>afterEach</code> и <code>cleanup</code>, затем вызовите <code>afterEach(cleanup)</code>.</p></section>
+    <section class="slide"><h2>globals: false</h2><p>Импортируйте <code>describe</code>, <code>it</code>/<code>test</code> и <code>expect</code> из Vitest в каждом файле. Явная очистка DOM нужна для независимости тестов.</p></section>
+    <section class="slide"><h2>Сценарий</h2><p>Для списка покупок: ввод → «Добавить» → название видно. Для пустой строки ожидаем отказ. Предметная область примера не связана с тренажёром.</p></section>
+    <section class="slide"><h2>RTL</h2><p>Используйте <code>render</code>, <code>userEvent</code> и <code>screen</code>. Ищите role/name или label, а не случайный CSS-класс.</p></section>
+    <section class="slide"><h2>Асинхронность</h2><p>Ожидайте <code>user.click</code>, используйте <code>findBy</code> или <code>waitFor</code> для реального изменения. Произвольные задержки не объясняют ожидание.</p></section>
+    <section class="slide"><h2>Навигация</h2><p>Ввести ответ → перейти назад → вперёд → увидеть прежнее значение по тому же идентификатору.</p></section>
+    <section class="slide"><h2>Ошибка</h2><p>Контролируемая API-ошибка → сообщение видно → ввод сохранён → повтор доступен. Внешний сервер и интернет не нужны.</p></section>
+    <section class="slide"><h2>Разбор дефекта</h2><p>Факт → гипотеза → проверка → исправление. Хороший тест заранее отвечает, какое нарушение он обнаружит.</p></section>
+    <section class="slide"><h2>A6 и P7</h2><p>Добавьте тесты поведения, настройте cleanup при <code>globals: false</code>, запустите <code>npm test</code> и <code>npm run build</code>, затем объясните границы одного теста.</p></section>
+  </main>
+  <nav class="controls"><button id="prev">Назад</button><button id="next">Далее</button><button id="print">Печать</button><span id="counter" class="counter"></span></nav>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')];let i=0;const counter=document.querySelector('#counter');const render=()=>{slides.forEach((slide,index)=>slide.classList.toggle('is-active',index===i));counter.textContent=(i+1)+' / '+slides.length};const move=delta=>{i=Math.max(0,Math.min(slides.length-1,i+delta));render()};document.querySelector('#prev').onclick=()=>move(-1);document.querySelector('#next').onclick=()=>move(1);document.querySelector('#print').onclick=()=>window.print();document.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key===' ')move(1);if(event.key==='ArrowLeft')move(-1);if(event.key==='Home'){i=0;render()}if(event.key==='End'){i=slides.length-1;render()}});render();
+  </script>
+</body>
+</html>

@@ -270,9 +270,25 @@
 <body>
   <main class="deck" aria-live="polite">
     <section class="slide is-active" aria-labelledby="slide-title-1">
-      <p class="eyebrow">Нулевое занятие</p>
+      <p class="eyebrow">Нулевое занятие · около 55 минут содержательной части</p>
       <h1 id="slide-title-1">Знакомство с курсом и стартовая практика</h1>
       <p>Наша задача — понять стартовую точку и начать работать с курсом.</p>
+    </section>
+
+    <section class="slide" aria-labelledby="slide-title-tools">
+      <p class="eyebrow">Перед кодом</p>
+      <h2 id="slide-title-tools">Инструменты и их роли</h2>
+      <div class="grid two">
+        <article class="card"><h3>HTML · CSS · JavaScript</h3><p>Структура, внешний вид и поведение веб-страницы.</p></article>
+        <article class="card"><h3>Node.js · npm</h3><p>Запуск инструментов и управление пакетами. Они понадобятся с L1.</p></article>
+        <article class="card"><h3>Редактор</h3><p>Помогает читать файлы, видеть ошибки и менять код.</p></article>
+        <article class="card"><h3>Git</h3><p>Сохраняет историю изменений и помогает сдавать работу.</p></article>
+      </div>
+      <pre class="code"><code>node --version
+npm --version
+git --version
+code --version</code></pre>
+      <p class="muted">Команды одинаковы в Linux и Windows PowerShell. Если CLI редактора недоступна, откройте его через меню системы.</p>
     </section>
 
     <section class="slide" aria-labelledby="slide-title-2">
@@ -365,7 +381,7 @@ git commit -m "Complete lesson 0 portfolio"</code></pre>
   &lt;section id="gallery"&gt;
     &lt;h2&gt;Избранные работы&lt;/h2&gt;
     &lt;figure&gt;
-      &lt;img src="images/portrait_1.jpg"
+      &lt;img src="../../images/portrait_1.jpg"
            alt="Портретная фотография"&gt;
       &lt;figcaption&gt;Портретная съёмка&lt;/figcaption&gt;
     &lt;/figure&gt;
@@ -467,7 +483,7 @@ button.addEventListener("click", () =&gt; {
     <button type="button" id="previous" aria-label="Предыдущий слайд">←</button>
     <button type="button" id="next" aria-label="Следующий слайд">→</button>
     <div class="progress" aria-hidden="true"><span id="progress"></span></div>
-    <div class="counter" id="counter" aria-live="polite">1 / 13</div>
+    <div class="counter" id="counter" aria-live="polite">1 / 14</div>
   </footer>
 
   <script>

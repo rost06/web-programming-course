@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>L1 — TypeScript и данные</title>
+  <style>
+    :root{font-family:system-ui,sans-serif;color:#f3eee8;background:#202426}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh}.slide{display:none;min-height:calc(100vh - 76px);max-width:1120px;margin:auto;padding:clamp(28px,6vw,76px) clamp(22px,7vw,90px) 96px}.slide.is-active{display:block}
+    h1,h2{line-height:1.08;margin:0 0 24px;max-width:960px}h1{font-size:clamp(2.5rem,7vw,6rem)}h2{font-size:clamp(2rem,5vw,4rem)}h3{color:#f0bc7c}p,li{font-size:clamp(1rem,1.6vw,1.35rem);line-height:1.5;max-width:920px}li{margin:.6em 0}.accent{color:#f0bc7c}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{padding:18px;border:1px solid #53606a;border-radius:14px;background:#2c3236}.code{padding:18px;overflow:auto;border-radius:12px;background:#131719;color:#f3c18d;font:1rem/1.55 ui-monospace,monospace;white-space:pre}.controls{position:fixed;bottom:0;left:0;right:0;display:flex;gap:10px;align-items:center;padding:12px 18px;background:#131719}.controls button{padding:8px 14px;color:#fff;background:transparent;border:1px solid #71808c;border-radius:7px;cursor:pointer}.controls button:hover,.controls button:focus-visible{border-color:#f0bc7c}.counter{min-width:70px;text-align:center}.bar{flex:1;height:5px;background:#3d464b;border-radius:9px}.bar span{display:block;height:100%;background:#f0bc7c;width:0}@media(max-width:620px){.grid{grid-template-columns:1fr}.slide{padding-bottom:110px}}@media print{body{background:#fff;color:#111}.slide,.slide.is-active{display:block;min-height:0;page-break-after:always;padding:24px}.controls{display:none}p,li{color:#111}}
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <section class="slide is-active"><p class="accent">L1</p><h1>TypeScript и данные</h1><p>Сначала создаём рабочий проект, затем описываем модель и правила обработки коллекций.</p></section>
+    <section class="slide"><h2>Зачем начинать с данных</h2><p>Идентификатор связывает сущности между экранами, тип различает допустимые формы, чистая функция даёт проверяемый результат. React и сервер появятся позже.</p></section>
+    <section class="slide"><h2>Термины проекта</h2><div class="grid"><div class="card"><h3>TypeScript</h3><p>Проверка формы значений до запуска.</p></div><div class="card"><h3>package.json</h3><p>Манифест зависимостей и команд.</p></div><div class="card"><h3>lockfile</h3><p>Точные версии дерева пакетов.</p></div><div class="card"><h3>tsconfig</h3><p>Правила компилятора.</p></div></div></section>
+    <section class="slide"><h2>Создайте проект в trainer</h2><p>Папка уже есть в репозитории, но <code>package.json</code>, lockfile, <code>tsconfig.json</code> и исходники проекта создаёт студент. Точная последовательность — в гайде.</p><p class="accent">TypeScript устанавливается по проверенной точной версии, без <code>latest</code>.</p></section>
+    <section class="slide"><h2>Проверка запуска</h2><div class="code">npm run check
+npm run demo</div><ul><li><code>check</code> проверяет типы.</li><li><code>demo</code> запускает маленький <code>.ts</code>-файл.</li><li><code>npm ci</code> используется после создания lockfile.</li></ul><p>Команды одинаковы в Linux и Windows PowerShell.</p></section>
+    <section class="slide"><h2>Модель — это договорённость</h2><p>Спросите: какие поля общие? Что различает формы? Какие поля появляются только в одном варианте? Как две коллекции связаны id?</p><div class="code">PaperBook | AudioBook
+       ↓ kind
+доступное поле формы</div></section>
+    <section class="slide"><h2>Discriminated union</h2><div class="code">type PaperBook = {
+  id: string; kind: "paper"; pages: number;
+};
+type AudioBook = {
+  id: string; kind: "audio"; duration: number;
+};</div><p>Проверка <code>kind</code> помогает безопасно выбрать соответствующее поле.</p></section>
+    <section class="slide"><h2>Коллекции</h2><div class="grid"><div class="card"><h3>find</h3><p>Один элемент или <code>undefined</code>; отсутствие нужно обработать.</p></div><div class="card"><h3>filter</h3><p>Новый массив, возможно пустой; исходные данные не меняются.</p></div></div><p class="accent">Пустой результат — обычный результат, а не исключение.</p></section>
+    <section class="slide"><h2>Производное значение</h2><p>Прогресс вычисляется из набора и ответов. Число заполненных элементов не должно жить вторым независимым состоянием.</p><ul><li>выбор считается заполненным;</li><li>текст из внешних пробелов — нет;</li><li>чужой идентификатор — не относится к текущему заданию.</li></ul></section>
+    <section class="slide"><h2>Чистая функция</h2><ul><li>получает всё нужное через параметры;</li><li>возвращает значение;</li><li>не мутирует массивы и объекты;</li><li>не зависит от React, HTTP, часов и случайности.</li></ul><p>В <code>demo.ts</code> покажите результаты вызовов для обычных и пустых входов.</p></section>
+    <section class="slide"><h2>A1: самостоятельная работа</h2><ul><li>Описать две формы заданий и две формы ответов по контракту.</li><li>Реализовать поиск по id, фильтр по теме и прогресс.</li><li>Проверить обычные и пустые наборы, отсутствующий id, чужой id и пробелы.</li><li>Создать типизированные данные из опубликованного примера и второй набор.</li><li>Запустить <code>check</code> и демонстрационный файл.</li></ul></section>
+    <section class="slide"><h2>Граница L1</h2><p>Не добавляйте React, Vite, формы, HTTP или хранилище. Строка <code>code</code> — данные для показа. Следующая лекция подключит UI к вашей модели.</p><p class="accent">P2 проверяет A1.</p></section>
+  </main>
+  <nav class="controls" aria-label="Навигация"><button id="prev">Назад</button><button id="next">Далее</button><span class="counter" id="counter"></span><span class="bar"><span id="bar"></span></span><button id="print">Печать</button></nav>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')],counter=document.querySelector('#counter'),bar=document.querySelector('#bar');let current=0;
+    function show(n){current=Math.max(0,Math.min(n,slides.length-1));slides.forEach((s,i)=>s.classList.toggle('is-active',i===current));counter.textContent=`${current+1} / ${slides.length}`;bar.style.width=`${(current+1)/slides.length*100}%`}
+    document.querySelector('#prev').onclick=()=>show(current-1);document.querySelector('#next').onclick=()=>show(current+1);document.querySelector('#print').onclick=()=>window.print();document.addEventListener('keydown',event=>{if(['ArrowRight','PageDown',' '].includes(event.key))show(current+1);if(['ArrowLeft','PageUp'].includes(event.key))show(current-1);if(event.key==='Home')show(0);if(event.key==='End')show(slides.length-1)});show(0);
+  </script>
+</body>
+</html>

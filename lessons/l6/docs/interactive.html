@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>L6 — интерактивные проверки</title>
+  <style>
+    body{font:18px/1.5 system-ui;max-width:900px;margin:auto;padding:24px;background:#edf5f0;color:#182d26}
+    section{background:white;padding:24px;margin:20px 0;border-radius:12px}button,input{font:inherit;padding:8px;margin:5px;max-width:100%}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#edf1ef;padding:14px}code{background:#e8efeb;padding:2px 4px;border-radius:4px}
+  </style>
+</head>
+<body>
+  <p><a href="../README.md">Задание</a> · <a href="GUIDE.md">Гайд</a> · <a href="CHEATSHEET.md">Справка</a></p>
+  <h1>Исполняемые ожидания</h1>
+  <p>Примеры выполняют JavaScript-проверки внутри страницы, без Vitest и без сети. Они показывают смысл ожиданий; настоящие тесты проекта запускаются после настройки командой <code>npm test</code>.</p>
+  <section>
+    <h2>Перед запуском тестов</h2>
+    <p>Vitest — раннер, RTL — библиотека пользовательских проверок, jsdom — тестовый DOM, mock — контролируемая замена API. При <code>globals: false</code> тесты импортируют API Vitest явно, а setup-файл вызывает <code>afterEach(cleanup)</code>.</p>
+    <pre><code>npm test
+npm run build</code></pre>
+  </section>
+  <section>
+    <h2>Заполненность</h2>
+    <label>Ответ<input id="value"></label><button id="check">Проверить</button><pre id="rule">Ожидание</pre><button id="suite">Проверить три примера</button><pre id="suiteResult"></pre>
+  </section>
+  <section>
+    <h2>Навигация</h2>
+    <label>Текст ответа<input id="nav"></label><button id="back">Назад</button><button id="forward">Вперёд</button><label><input id="lose" type="checkbox">Внести дефект: терять текст при возврате</label><pre id="navResult">Шаг ввода</pre>
+  </section>
+  <section>
+    <h2>Ошибка отправки</h2>
+    <button id="send">Отправить</button><button id="retry">Повторить успешно</button><pre id="error">Операция не запущена</pre>
+  </section>
+  <script>
+    const $=id=>document.getElementById(id),filled=value=>value.trim().length>0;let saved='',away=false;
+    $('check').onclick=()=>{$('rule').textContent='isFilled = '+filled($('value').value)+'; это результат правила, а не оценка ответа.'};
+    $('suite').onclick=()=>{const cases=[['',false],['  ',false],['ok',true]];$('suiteResult').textContent=cases.map(([input,expected])=>{const actual=filled(input);return(actual===expected?'PASS':'FAIL')+' '+JSON.stringify(input)+': expected '+expected+', actual '+actual}).join('\n')};
+    $('back').onclick=()=>{saved=$('nav').value;away=true;$('nav').hidden=true;$('navResult').textContent='Другой шаг; сохранено '+JSON.stringify(saved)};
+    $('forward').onclick=()=>{if(!away){$('navResult').textContent='Сначала введите текст и перейдите назад.';return}$('nav').hidden=false;$('nav').value=$('lose').checked?'':saved;away=false;const actual=$('nav').value;$('navResult').textContent=(actual===saved?'PASS':'FAIL')+': ожидалось '+JSON.stringify(saved)+', получено '+JSON.stringify(actual)};
+    $('send').onclick=()=>{const before=$('nav').value;Promise.resolve().then(()=>{$('error').textContent='HTTP 500 (симуляция). '+($('nav').value===before?'PASS: ввод сохранён.':'FAIL: ввод потерян.')+' Доступен повтор.'})};$('retry').onclick=()=>{$('error').textContent='Симуляция успешного повтора: сохранено '+JSON.stringify($('nav').value)};
+  </script>
+</body>
+</html>

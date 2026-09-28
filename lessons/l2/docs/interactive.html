@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>L2 — интерактивные примеры</title>
+  <style>
+    body{font:16px/1.5 system-ui;max-width:980px;margin:auto;padding:24px;background:#f5f7fb;color:#172033}
+    section{background:#fff;border:1px solid #dce3ef;border-radius:14px;padding:20px;margin:16px 0}
+    button,input{font:inherit;padding:9px 10px;border:1px solid #9aa8bd;border-radius:8px;max-width:100%}
+    button{cursor:pointer;background:#244a7c;color:#fff}.demo{display:grid;grid-template-columns:minmax(180px,.7fr) 1.3fr;gap:16px}.list{display:grid;gap:8px}.list button{text-align:left;background:#f8fafc;color:#172033}.list button[aria-current=true]{border-color:#244a7c;background:#e8f0fb}.panel{padding:16px;background:#eef5ff;border-radius:10px}.code{white-space:pre-wrap;background:#1e293b;color:#e4edf9;padding:12px;border-radius:8px}@media(max-width:650px){.demo{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <h1>Props и состояние на каталоге книг</h1>
+  <nav><a href="../README.md">Задание</a> · <a href="GUIDE.md">Гайд</a> · <a href="CHEATSHEET.md">Справка</a> · <a href="slides-standalone/slides.html">Слайды</a></nav>
+  <section>
+    <h2>Термины</h2>
+    <p>Компонент — функция интерфейса, props — вход от родителя, state — изменяемое значение, а <code>key</code> — стабильный идентификатор элемента списка. В настоящем React mount связывает корень с DOM; Vite запускает модульный проект.</p>
+    <p>Ниже те же идеи смоделированы обычным JavaScript. Предметная область — книги, поэтому пример не является решением A2.</p>
+  </section>
+  <section>
+    <div class="demo">
+      <div><h2>BookList</h2><div class="list" id="list"></div><button id="clear">Очистить выбор</button></div>
+      <div><h2>BookCard</h2><div class="panel" id="card"></div></div>
+    </div>
+  </section>
+  <section>
+    <h2>Изменяемый prop</h2>
+    <label>Заголовок карточки <input id="title" value="Текущая книга"></label>
+    <button id="apply">Передать в карточку</button>
+    <p class="panel" id="propResult"></p>
+  </section>
+  <script>
+    const books=[
+      {isbn:'978-1',title:'Справочник',format:'paper',pages:120},
+      {isbn:'978-2',title:'Рассказы',format:'audio',minutes:90},
+      {isbn:'978-3',title:'Словарь',format:'paper',pages:240}
+    ];
+    let activeIsbn=books[0].isbn;
+    const list=document.querySelector('#list'),card=document.querySelector('#card');
+    function draw(){
+      list.replaceChildren(...books.map(book=>{const button=document.createElement('button');button.textContent=book.title;button.dataset.isbn=book.isbn;button.setAttribute('aria-current',String(book.isbn===activeIsbn));button.onclick=()=>{activeIsbn=book.isbn;draw()};return button}));
+      const book=books.find(item=>item.isbn===activeIsbn);
+      if(!book){card.textContent='Книга не выбрана';return}
+      card.replaceChildren();const title=document.createElement('strong');title.textContent=book.title;const meta=document.createElement('p');meta.textContent=book.format==='paper'?`${book.pages} страниц`:`${book.minutes} минут аудио`;card.append(title,meta);
+    }
+    document.querySelector('#clear').onclick=()=>{activeIsbn='';draw()};
+    document.querySelector('#apply').onclick=()=>{document.querySelector('#propResult').textContent=document.querySelector('#title').value||'Пустой prop'};
+    draw();
+  </script>
+</body>
+</html>
