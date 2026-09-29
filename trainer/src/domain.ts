@@ -75,3 +75,5 @@ export function calculateProgress(set: TrainingSet, answers: Answer[]): { filled
 
   return { filled, total };
 }
+
+

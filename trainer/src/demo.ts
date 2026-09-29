@@ -71,3 +71,5 @@ console.log("Прогресс пустого набора:", calculateProgress(e
 console.log("\nПРОВЕРКА ЧИСТОТЫ (Данные не изменились)");
 console.log("Длина исходного mainSet.tasks:", mainSet.tasks.length);
 console.log("Длина исходного userAnswers:", userAnswers.length); 
+
+
