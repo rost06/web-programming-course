@@ -1,0 +1,14 @@
+{
+  "name": "trainer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "demo": "tsx src/demo.ts"
+  },
+  "devDependencies": {
+    "tsx": "4.23.13",
+    "typescript": "5.8.3"
+  }
+}

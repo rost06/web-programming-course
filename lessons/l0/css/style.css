@@ -45,20 +45,6 @@ button {
     outline-offset: 3px;
 }
 
-.starter-note {
-    max-width: 720px;
-    margin: 10vh auto;
-    padding: 32px;
-    border: 1px dashed #b9a28e;
-    border-radius: 16px;
-    background: #fffdf9;
-    text-align: center;
-}
-
-.starter-note h1 {
-    margin-bottom: 12px;
-}
-
 
 header {
     text-align: center;
