@@ -3,7 +3,7 @@ import { findTaskById, filterTasksByTopic, calculateProgress } from "./domain";
 
 // тесты данные 
 
-const mainSet: TrainingSet = {
+export const mainSet: TrainingSet = {
   id: "set-1",
   title: "Основы TypeScript и React",
   tasks: [

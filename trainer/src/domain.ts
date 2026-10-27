@@ -19,7 +19,7 @@ export type ShortTextTask = {
 
 export type Task = SingleChoiceTask | ShortTextTask;
 
-// типы для ответов
+// типы для ответов пользователя 
 export type ChoiceAnswer = {
   taskId: string;
   kind: "single-choice";
